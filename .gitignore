@@ -1,0 +1,7 @@
+# .gitignore file for Latex Prospectus Document
+
+*.aux
+*.bbl
+*.blg
+*.log
+*.gz
