@@ -25,7 +25,7 @@
 \large
 by\\[.25 in]
 % Change your name here
-Master Jesse S. Wynn\\[1in]
+Jesse S. Wynn\\[1in]
 
 A prospectus submitted to the faculty of\\
 Department of Mechanical Engineering\\
@@ -99,11 +99,11 @@ This prospectus has been approved by each member of the Graduate Committee:
 
 \section{Problem Statement}
 
-Thanks to the rapid advancement of quadrotor unmanned aircraft systems (UAS) technology, applications in maritime environments and conditions are becoming more viable.  A critical capability for nearly all UAS at sea is the ability to autonomously and accurately land on moving platforms, such as a ship deck \cite{Herisse2012}.  A variety of algorithms for shipboard landing have already been developed--many of which incorporate a downward-facing vision sensor to track some kind of marker on deck \cite{Truskin2013} \cite{Kong2014}.  A widespread weakness of current landing techniques however, is that they usually require good visibility, and relatively calm sea state to operate reliably \cite{Tan2016}. Also, the assumption is often made that the ship is a large vessel and is therefore much less agile than the UAS, and less affected by turbulent seas \cite{Ling2014}.  Given that favorable visibility and sea state may, at any time not be found on actual seas, and that the resulting challenges are further compounded when the sea vessel is small, the problem of enhancing quadrotor UAS maritime landing capabilities for small vessels is motivated.  
+Thanks to the rapid advancement of quadrotor unmanned aircraft systems (UAS) technology, applications in maritime environments and conditions are becoming more viable.  A critical capability for nearly all UAS at sea is the ability to autonomously and accurately land on moving platforms, such as a ship deck \cite{Herisse2012}.  A variety of algorithms for shipboard landing have already been developed--many of which incorporate a downward-facing vision sensor to track some kind of marker on deck \cite{Truskin2013} \cite{Kong2014}.  A widespread weakness of current landing techniques however, is that they usually require good visibility, and relatively calm sea state to operate reliably \cite{Tan2016}. Also, the assumption is often made that the ship is a large vessel and is therefore much less agile than the UAS, and less affected by turbulent seas \cite{Ling2014}.  Given that favorable visibility and sea state may, at any time not be found on actual seas, and that the resulting challenges are further compounded should the sea vessel be small, the problem of enhancing quadrotor UAS maritime landing capabilities is motivated.  
 
 %The objective of this proposed research is not to create a new landing algorithm from scratch, but rather to understand how the integration and fusion of additional sensor measurements can enable current methods to operate reliably in a greater range of conditions and sea states.
 
-The objective of this proposed research is not to create a new landing algorithm entirely from scratch, but rather to explore how the addition and fusion of additional sensors and measurements can enable current techniques to operate reliably for small vessels in a broader range of conditions.  Of particular interest is the ability to operate in low-light environments, and in conditions where ship deck motion (heave, roll, pitch) is relatively large.
+The objective of this proposed research is not to create a new landing algorithm entirely from scratch, but rather to explore how the addition and fusion of additional sensors and measurements can enable current techniques to operate reliably for vessels of all sizes in a broader range of conditions.  Of particular interest is the ability to operate in low-light environments, and in conditions where ship deck motion (heave, roll, pitch) is relatively large.
 
 
 \section{Background}
@@ -127,10 +127,13 @@ Current vision-based approaches to quadrotor UAS shipboard landing typically seg
 %\end{figure}
 
 %Garratt, Pota, Lambert et al. 2009
-In 2009, Garratt et. al. \cite{Garratt2009} detailed a shipboard landing method for autonomous collective pitch helicopters that used a digital camera and a laser range finder pointed at a spinning mirror to supply data for estimating the relative position and motion of the ship deck.  Flight test results showed that their system was able to estimate the relative roll and pitch angles, as well as height distance between the helicopter and the simulated ship deck to a high degree of accuracy.  Their results however only demonstrated the capabilities of their measurement and estimation system and did not demonstrate the actual ability to execute a successful landing maneuver.
+In 2009, Garratt et. al. \cite{Garratt2009} detailed a shipboard landing method for autonomous collective pitch helicopters that used a digital IR camera and a laser range finder pointed at a spinning mirror to supply data for estimating the relative position and motion of the ship deck.  Flight test results showed that their system was able to estimate the relative roll and pitch angles, as well as height distance between the helicopter and the simulated ship deck to a high degree of accuracy.  Their results however only demonstrated the capabilities of their measurement and estimation system and did not demonstrate the actual ability to execute a successful landing maneuver.
   
 %Ling, Chow, et al. 2014
-In 2014 Ling et. al. \cite{Ling2014} presented a low-cost method for performing autonomous maritime landings with small VTOL aerial vehicles.  Their sensing system consisted of a uEye camera on-board the VTOL and an AprilTag fiducial target on the simulated ship deck.  Their method demonstrates the ability to accurately track the position of the shipboard landing target, but more work would be needed before a robust estimate of the ship deck attitude could be estimated.  Further, their system was constructed around a highly simplified model for the ship dynamics and would likely breakdown if actual ship motion were to be more extreme.   
+In 2014 Ling et. al. \cite{Ling2014} presented a low-cost method for performing autonomous maritime landings with small VTOL aerial vehicles.  Their sensing system consisted of a uEye camera on-board the VTOL and an AprilTag fiducial target on the simulated ship deck.  Their method demonstrates the ability to accurately track the position of the shipboard landing target, but more work would be needed before a robust estimate of the ship deck attitude could be obtained.  Further, their system was constructed around a highly simplified model for the ship dynamics and would likely breakdown if actual ship motion were to be more extreme.
+
+%Tan, Wang, et al. 2016
+In 2016 Tan et. al. \cite{Tan2016} developed a linear controller that uses an invariant ellipsoid method to restrict the ship-motion tracking error to within an optimal bound.  Their developed controller was robust to unknown wind disturbances, and ship heave motion.  The test results showed --------------STOPPED HERE--------------    
 
 %probably need to add some more background references here
 
@@ -147,7 +150,7 @@ To successfully complete this proposed research, the following objectives will b
 
 	\item Implement an existing vision-based landing approach in simulation to be used as a baseline for shipboard landing performance.  
 
-	\item Augment the simulation by modeling additional sensor data from the UAS and/or ship that can be used to enable successful autonomous landings in a wider range of sea conditions.
+	\item Augment the simulation by modeling additional sensor data from the UAS and/or ship that can be used to enable successful autonomous landings in a wider range of visibility and sea conditions.
 
 	\item Based on the most effective approach found through simulation, implement the solution in hardware on an actual quadrotor with onboard sensors and ship-based sensors.
 	
