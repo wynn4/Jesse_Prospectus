@@ -20,7 +20,7 @@
 \vspace{0.5in}
 
 % Insert your title here
-{ \LARGE \bfseries Precision Maritime Landing of Quadrotor UAS On Small Sea Vessels}\\[.25in]
+{ \LARGE \bfseries Maritime Landing of Quadrotor UAS In Challenging Conditions}\\[.25in]
 
 \large
 by\\[.25 in]
@@ -105,6 +105,12 @@ Thanks to the rapid advancement of quadrotor unmanned aircraft systems (UAS) tec
 
 The objective of this proposed research is not to create a new landing algorithm entirely from scratch, but rather to explore how the addition and fusion of additional sensors and measurements can enable current techniques to operate reliably for vessels of all sizes in a broader range of conditions.  Of particular interest is the ability to operate in low-light environments, and in conditions where ship deck motion (heave, roll, pitch) is relatively large.
 
+\begin{figure}[h] %  figure placement: here, top,  bottom, or page
+   \centering
+   \includegraphics[trim = 0mm 0mm 0mm 0mm,clip,width=3in]{ship_motions.png}
+   \caption{Definitions of reference frames and ship motions (surge, sway, heave, roll, pitch and yaw)}
+   \label{fig:shipmotions}
+\end{figure}
 
 \section{Background}
 
@@ -133,11 +139,11 @@ In 2009, Garratt et. al. \cite{Garratt2009} detailed a shipboard landing method 
 In 2014 Ling et. al. \cite{Ling2014} presented a low-cost method for performing autonomous maritime landings with small VTOL aerial vehicles.  Their sensing system consisted of a uEye camera on-board the VTOL and an AprilTag fiducial target on the simulated ship deck.  Their method demonstrates the ability to accurately track the position of the shipboard landing target, but more work would be needed before a robust estimate of the ship deck attitude could be obtained.  Further, their system was constructed around a highly simplified model for the ship dynamics and would likely breakdown if actual ship motion were to be more extreme.
 
 %Tan, Wang, et al. 2016
-In 2016 Tan et. al. \cite{Tan2016} developed a linear controller that uses an invariant ellipsoid method to restrict the ship-motion tracking error to within an optimal bound.  Their developed controller was robust to unknown wind disturbances, and ship heave motion.  The test results showed --------------STOPPED HERE--------------    
+In 2016 Tan et. al. \cite{Tan2016} developed a linear controller that uses an invariant ellipsoid method to restrict the ship-motion tracking error to within an optimal bound.  Their developed controller was robust to unknown wind disturbances, and ship heave motion.  Their simulation results showed impressive performance for a planar quadrotor scenario.  The invariant ellipsoid method could be adapted to a full three-dimensional quadrotor and simulation, but was not done in this work.  While this paper does present a strong controls strategy that seems worthy of future consideration, the lack of sensor inputs and real-world flight tests gives ample room for further research and testing.     
 
 %probably need to add some more background references here
 
-From this brief survey of the current research, it can be seen that although various and significant contributions have been made in the field of autonomous shipboard landing, there is still great opportunity for continued research.
+From this brief survey of the current research, it can be seen that although various and significant contributions have been made in the field of autonomous shipboard landing, there is still great opportunity for continued research.  The research I would like to propose I believe would help to move some of the current research from the simulation and simplified use case, to real-world application.
 
 \section{Research Objectives}
 
@@ -160,31 +166,35 @@ To successfully complete this proposed research, the following objectives will b
 
 \section{Proposed Research}
 
-To address the problem at hand, a multi-phase approach will be used.  Research work will commence by first identifying a suitable and somewhat generic controls framework that can be used to accomplish a vision-based shipboard landing.  This framework will then be implemented and tested in simulation using MathWorks\textsuperscript{\textregistered} MATLAB and SIMULINK.  To keep things simple to begin with, a proportional integral derivative (PID) controller will be implemented for the Quadrotor UAS.  The Extended Kalman Filter (EKF) will be used to generate state estimates for the UAS, and will be augmented to take in additional measurement inputs from the vision system in order to generate estimates for the ship deck attitude.  Once functional in simulation, tests will be performed to evaluate the performance and limitations of the vision-based landing approach. 
+To address the problem at hand, a multi-phase approach will be used.  Research work will commence by first identifying a suitable and somewhat generic controls framework that can be used to accomplish a vision-based shipboard landing.  This framework will then be implemented and tested in simulation using MathWorks\textsuperscript{\textregistered} MATLAB and SIMULINK.  To keep things simple to begin with, a proportional integral derivative (PID) controller will be implemented for the Quadrotor UAS.  The Extended Kalman Filter (EKF) will be used to generate state estimates for the UAS, and will be augmented to take in additional measurement inputs from the vision system in order to generate estimates for the ship deck attitude and relative position.  Once functional in simulation, tests will be performed to evaluate the performance and limitations of the vision-based landing approach.
 
-Brigham Young University, and specifically the MAGICC Lab, has a strong background in the field of 'Relative Navigation' for UAS \cite{Leishman2013}.  Though the shipboard landing problem is significantly different than the relative navigation work that has been previously performed here, successful shipboard landing requires a form of relative navigation, and can likely draw on some of the relative navigation work that has already been done.  In the current relative navigation problem, measurements between the static surroundings and the dynamic UAS are taken to estimate the relative position and velocities of the UAS.  If we now flip the problem by assuming that the UAS is pseudo-stationary (i.e. its movement is small and its position is known thanks to GPS), we would like to explore the possibility of taking similar measurements to estimate the state of the dynamic surrounding (i.e. the ship deck). In the current relative navigation problem, an accurate estimate of the UAS' state is aided significantly by measurements from an on-board IMU. Similarly, we would like to research the contribution that a ship-based IMU can offer to enable a more robust shipboard landing solution.
+The first augmentation to a standard vision-based landing method that we would like to research is operating in low-light or total darkness.  This stage of the research will require different sensor and landing marker combinations to be evaluated and tested.  Of current interest is using an infrared (IR) camera and IR markers.  In 2015 Wilson \cite{WilsonDB.2015} successfully used an IR-sensitive camera to track IR beacons along the trailing edge of a leading aircraft's wing and around the rim of a drogue that the leading aircraft was towing behind (see Figure ~\ref{fig:irmarkers}).  It was shown that the IR beacons could easily be seen and tracked by the IR vision system in a wide range of lighting conditions.  Wilson's results also showed that he was able to obtain good relative position estimates between the leading and following aircraft using the same IR markers.  Building on Wilson's findings, we would like to see how a similar IR vision and marker system could be implemented to enable autonomous shipboard landing in dark and lighted conditions. 
 
-Though much of this proposed research will begin in simulation, the resultant methods and solutions that are discovered are planned to be implemented in hardware flight tests.  Testing in hardware will require a quadrotor UAS to be procured and assembled, and will also require a ship deck motion emulator to be fabricated.  The UAS will be comprised of standard hobbyist equipment for the airframe and propulsion system, and the ship deck emulator will similarly be fabricated using off-the-shelf components.  Autopilot capabilities for the UAS will be enabled through the use of a ROSflight flight controller paired with an on-board computer that will run the autopilot control loops in Robot Operating System (ROS).  The ship deck emulator is planned to have its own GPS receiver and IMU unit.  Communication of sensor measurements and/or state estimates from the ship deck emulator to the UAS are planned to be communicated over a local WiFi network.  At all times during flight test operations the UAS will be controllable through a ground-station computer, and a safety pilot will be present to take manual control of the UAS at any moment.  
-
-\begin{figure}[htbp] %  figure placement: here, top,  bottom, or page
+\begin{figure}[t] %  figure placement: here, top,  bottom, or page
    \centering
-   \includegraphics[trim = 0mm 0mm 0mm 0mm,clip,width=4in]{pressure.eps}
-   \caption{Comparison of actual and simulated PDE flow. The solid blue line is the turbine inlet pressure for cold flow as presented by Rouser et. al.. The dashed green line is the exit pressure from a valve rotated at 12.3~Hz. The peaks are not aligned due to the different operating frequencies. This figure shows that a rotating ball valve can be used to qualitatively approximate PDE flow through a turbine.}
-   \label{fig:pressurecomparison}
+   \includegraphics[trim = 0mm 0mm 0mm 0mm,clip,width=6in]{ir_drogue.png}
+   \caption{Infrared markers as seen through RGB and IR cameras \cite{WilsonDB.2015}.}
+   \label{fig:irmarkers}
 \end{figure}
 
-The experimental apparatus will have instrumentation to measure pressures, temperatures, and mass flow.
+Brigham Young University, and specifically the MAGICC Lab, has a strong background in the field of Relative Navigation for UAS \cite{Leishman2013}.  Though the shipboard landing problem is significantly different than the relative navigation work that has been previously performed here, successful shipboard landing requires a form of relative navigation, and can likely draw on some of the relative navigation work that has already been done.  In the current relative navigation problem, measurements between the static surroundings and the dynamic UAS are taken to estimate the relative position and velocities of the UAS.  If we now flip the problem by assuming that the UAS is pseudo-stationary (i.e. its movement is small and its position is known thanks to GPS), we would like to explore the possibility of taking similar measurements to estimate the state of the dynamic surrounding (i.e. the ship deck). In the current relative navigation problem, an accurate estimate of the UAS' state is aided significantly by measurements from an on-board IMU. Similarly, we would like to research the contribution that a ship-based IMU can offer to enable a more robust shipboard landing solution.
+
+Though much of this proposed research will begin in simulation, the resultant methods and solutions that are discovered are planned to be implemented in hardware flight tests.  Testing in hardware will require a quadrotor UAS to be procured and assembled, and will also require a ship deck motion emulator to be fabricated.  The UAS will be comprised of standard hobbyist equipment for the airframe and propulsion system, and the ship deck emulator will similarly be fabricated using off-the-shelf components.  Autopilot capabilities for the UAS will be enabled through the use of a ROSflight flight controller paired with an on-board computer that will run the autopilot control loops in Robot Operating System (ROS).  The ship deck emulator is planned to have its own GPS receiver and IMU unit.  Communication of sensor measurements and/or state estimates from the ship deck emulator to the UAS are planned to be communicated over a local WiFi network.  At all times during flight test operations the UAS will be controllable through a ground-station computer, and a safety pilot will be present to take manual control of the UAS at any moment.  When satisfactory results from flight demonstrations are obtained, the data will be collected, analyzed, and presented in the form of a formal Thesis. 
+
+
+
+%The experimental apparatus will have instrumentation to measure pressures, temperatures, and mass flow.
 %The pressures and temperatures will be measured at the turbine and compressor inlets and outlets. Pressures will be measured using pressure transducers and temperatures using thermocouples. The thrust will be measured using an air bearing system to decrease friction and a strain gauge. The mass flow into the compressor and turbine will be measured.
-Turbine power will be measured using the compressor work. Exact power measurement is not necessary since a comparison will be made on the same equipment and not with independently collected data.
+%Turbine power will be measured using the compressor work. Exact power measurement is not necessary since a comparison will be made on the same equipment and not with independently collected data.
 
-Experimental data will be used to compare steady and pulsed flow. Comparisons will be made using specific power, turbine efficiency, and a turbine map. Specific thrust and power will both be calculated by dividing the respective quantities by the mass flow rate through the turbine. The conventional methods used to calculate turbine efficiency are not adequate due to the unsteady flow conditions. A method to include the unsteady effects in the calculation of efficiency is still being investigated.
+%Experimental data will be used to compare steady and pulsed flow. Comparisons will be made using specific power, turbine efficiency, and a turbine map. Specific thrust and power will both be calculated by dividing the respective quantities by the mass flow rate through the turbine. The conventional methods used to calculate turbine efficiency are not adequate due to the unsteady flow conditions. A method to include the unsteady effects in the calculation of efficiency is still being investigated.
 
-An example of an equation is shown in Equation~\ref{eq:efficiency}.
+%An example of an equation is shown in Equation~\ref{eq:efficiency}.
 
-\begin{equation}
-\eta_t = \cfrac{\dot W_c + \dot W_{fric}}{\dot m c_p \left[ 1 - \left( \cfrac{p_{t5}}{p_{t4}} \right)^\frac{\gamma - 1}{\gamma} \right]}
-\label{eq:efficiency}
-\end{equation}
+%\begin{equation}
+%\eta_t = \cfrac{\dot W_c + \dot W_{fric}}{\dot m c_p \left[ 1 - \left( \cfrac{p_{t5}}{p_{t4}} \right)^\frac{\gamma - 1}{\gamma} \right]}
+%\label{eq:efficiency}
+%\end{equation}
 
 %Flack \cite{flack:2008fundamentals-of} presents a method to create a turbine map. Both turbine pressure ratio and efficiency can be expressed as functions of corrected mass flow and rotational speed as shown in Equations~\ref{pressure_ratio} and~\ref{efficiency_function}.
 %
@@ -207,8 +217,7 @@ An example of an equation is shown in Equation~\ref{eq:efficiency}.
 
 \section{Anticipated Contributions}
 
-As a result of this research, there will be an improved understanding of the effect of unsteady, pulsed flow through a turbine. A direct comparison will be made between steady and unsteady flow through an axial turbine without any bypass flow. This direct comparison has not been previously performed. Possible publications from this research include presenting at the ASME Turbo Expo, submitting to the ASME Journal of Turbomachinery, presenting at the AIAA Aerospace Science Meeting, or other conferences and journals. This research is sponsored by Innovative Scientific Solutions, Inc. through an Air Force contract.
-
+As a result of this research, there will be an improved understanding of how robust maritime landing can be achieved in real-world applications and conditions.  It is anticipated that this research will demonstrate ----STOPPED HERE-----A direct comparison will be made between steady and unsteady flow through an axial turbine without any bypass flow. This direct comparison has not been previously performed. Possible publications from this research include presenting at the ASME Turbo Expo, submitting to the ASME Journal of Turbomachinery, presenting at the AIAA Aerospace Science Meeting, or other conferences and journals. This research is sponsored by Innovative Scientific Solutions, Inc. through an Air Force contract.
 
 \pagebreak
 
